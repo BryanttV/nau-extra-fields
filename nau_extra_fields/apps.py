@@ -11,3 +11,4 @@ class NauExtraFieldsConfig(AppConfig):
     """
 
     name = "nau_extra_fields"
+    default_auto_field = "django.db.models.BigAutoField"
