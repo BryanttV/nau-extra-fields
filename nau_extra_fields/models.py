@@ -1,6 +1,7 @@
 """
 Database models for nau_extra_fields.
 """
+
 # from django.db import models
 from model_utils.models import TimeStampedModel
 
@@ -21,4 +22,4 @@ class NauUserExtendedModel(TimeStampedModel):
         Get a string representation of this model instance.
         """
         # TODO: return a string appropriate for the data fields
-        return '<NauUserExtendedModel, ID: {}>'.format(self.id)
+        return "<NauUserExtendedModel, ID: {}>".format(self.id)

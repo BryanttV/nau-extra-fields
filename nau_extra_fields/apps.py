@@ -10,4 +10,4 @@ class NauExtraFieldsConfig(AppConfig):
     Configuration for the nau_extra_fields Django application.
     """
 
-    name = 'nau_extra_fields'
+    name = "nau_extra_fields"
