@@ -40,9 +40,20 @@ from django.forms import ModelForm
 from nau_extra_fields.models import NauUserExtendedModel
 
 
+def validate_nickname(value):
+    if value == "admin":
+        raise forms.ValidationError("Nickname cannot be 'admin'.")
+    if len(value) == 8:
+        raise forms.ValidationError("Nickname cannot be 8 characters long.")
+
+
 class ExtraInfoForm(ModelForm):
     """
     Form that represents user extra info and is compatible with edX's FormDescription system.
+
+    Adding a field as 'required' will make it mandatory for the user to fill it in, and
+    and will show it in the registration form:
+    https://github.com/openedx/edx-platform/blob/c9886882e3280b84fed1bf87d01a74e745e88d75/openedx/core/djangoapps/user_authn/views/registration_form.py#L469
     """
 
     def __init__(self, *args, **kwargs):
@@ -53,48 +64,55 @@ class ExtraInfoForm(ModelForm):
         self.fields["nickname"].min_length = 3
         self.fields["nickname"].max_length = 100
         self.fields["nickname"].required = True
+        self.fields["nickname"].validators = [validate_nickname]
         self.fields["nickname"].restrictions = {
             "min_length": 3,
             "max_length": 100,
+        }
+        self.fields["nickname"].error_messages = {
+            "required": "Please enter a nickname to know you better!",
         }
 
         # Textarea field
         self.fields["bio"].widget = forms.Textarea()
         self.fields["bio"].help_text = "Write a short bio."
         self.fields["bio"].field_type = "textarea"
-        self.fields["bio"].required = True
-        self.fields["bio"].error_messages = {
-            "required": "Please tell us something about yourself",
-        }
+        self.fields["bio"].required = False
+        # self.fields["bio"].error_messages = {
+        #     "required": "Please tell us something about yourself",
+        # }
 
         # Checkbox
         self.fields["wants_newsletter"].label = "Subscribe to newsletter?"
 
         # Select field
         self.fields["favorite_language"].help_text = "Pick your preferred programming language."
+        self.fields["favorite_language"].required = False
 
         # Plaintext hint
         self.fields["password_hint"].help_text = "This will help you remember your password."
         self.fields["password_hint"].placeholder = "Insert a hint"
         self.fields["password_hint"].min_length = 5
         self.fields["password_hint"].max_length = 10
-        self.fields["password_hint"].required = True
+        self.fields["password_hint"].required = False
         self.fields["password_hint"].error_messages = {
-            "required": "Insert a hint for your password",
+            # "required": "Insert a hint for your password",
             "min_length": "Hint is too short",
             "max_length": "Hint is too long",
         }
 
         # Checkbox with custom message
+        self.fields["data_authorization"].required = True
         self.fields["data_authorization"].error_messages = {
             "required": "Please authorize data processing.",
         }
 
         # Agreement checkbox
         self.fields["terms_accepted"].label = "I accept the Terms and Conditions"
-        self.fields["terms_accepted"].required = True
-
-        self.fields["favorite_language"].required = True
+        self.fields["terms_accepted"].required = False
+        # self.fields["terms_accepted"].error_messages = {
+        #     "required": "Please accept the Terms and Conditions",
+        # }
 
     class Meta:
         model = NauUserExtendedModel
