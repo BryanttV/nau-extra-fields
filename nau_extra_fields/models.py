@@ -28,11 +28,11 @@ class NauUserExtendedModel(models.Model):
         )
     )
 
-    full_name = models.CharField(
+    nickname = models.CharField(
         blank=True,
         max_length=255,
         validators=[MinLengthValidator(2)],
-        verbose_name=_("Full name"),
+        verbose_name=_("Nickname"),
     )
 
     bio = models.TextField(

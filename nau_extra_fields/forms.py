@@ -49,11 +49,11 @@ class ExtraInfoForm(ModelForm):
         super().__init__(*args, **kwargs)
 
         # Text field with restrictions
-        self.fields["full_name"].help_text = "Enter your full name."
-        self.fields["full_name"].min_length = 3
-        self.fields["full_name"].max_length = 100
-        self.fields["full_name"].required = True
-        self.fields["full_name"].restrictions = {
+        self.fields["nickname"].help_text = "Enter your nickname."
+        self.fields["nickname"].min_length = 3
+        self.fields["nickname"].max_length = 100
+        self.fields["nickname"].required = True
+        self.fields["nickname"].restrictions = {
             "min_length": 3,
             "max_length": 100,
         }
@@ -100,7 +100,7 @@ class ExtraInfoForm(ModelForm):
         model = NauUserExtendedModel
         fields = [
             "data_authorization",
-            "full_name",
+            "nickname",
             "bio",
             "wants_newsletter",
             "favorite_language",
